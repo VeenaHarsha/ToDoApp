@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+}
+h2 {
+    text-align: center;
+}
+h3 {
+    margin-left: 53%;
+}
+body {
+    background-color: #f4f4f4;
+    /* line-height: 1.5em; */
+    font: normal;
+}
+ul{
+    padding : 5px;
+    margin-left: 28%;
+}
+ul li {
+    list-style: none;
+    padding : 5px;
+}
+.list-container, .task-container ,.viewlist-container{
+    width: 80%;
+    margin:auto;
+    border:1px gainsboro dotted ;
+}
+
+#list-form input[type='text']{
+    width:30%;
+    padding: 10px;
+    justify-content: center;
+    margin-left: 33%;
+}
+.button ,.ListButton {
+    background-color: #333;
+    border:none;
+    color:#fff;
+    /* margin-left: 10%; */
+    padding:10px;
+}
+.ListButton1{
+    border: none;
+    padding: 10px;
+    background-color: #333;
+    color:#fff;
+}
+.ListButton.active {
+    background-color: #666;
+    color: white;
+}
+
+.btn-group {
+    padding: 10px;
+    /* display: inline-flex; */
+    display: block;
+}
+#task-form ,#list-form{
+    width:80%
+}
+ #lName{
+    margin-left:53%
+}
+#task-form textarea{
+    width : 100%;
+    padding: 10px;
+}
+.form-container{
+    margin-left:33%;
+    display: grid;
+    /* align-items: flex-start; */
+}
+
+.block-2 {
+    margin-left: 33%;
+    /* display: flex inline-block; */
+    /* display: grid; */
+    /* flex-direction: column;     */
+}
+.block-2 div {
+    padding: 10px;
+    display: block;
+}
+.block-3 .button {
+    margin: auto; 
+}
