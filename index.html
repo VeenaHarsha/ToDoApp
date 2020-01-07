@@ -5,35 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>To Do</title>
 </head>
 <body>
-    <h2>To Do App 123</h2>
-    <div class="list-container">
-        <form id="list-form">
-            <div class="form-container-1">
+    <div class="main-container">
+        <div class="nav-bar">
+            <button class="block-1" id="listId">New List</button>
+            <button  id="goback" style="display: none;">Back</button>
+             <div class="btn-group"> 
+                <button class="block-2 active">Lists</button>
+                <button class="block-2">Today</button>
+                <button class="block-2">Scheduled</button>
+            </div> 
+            <button class="block-3">Search</button>
+            <button class="block-3">Select</button>
+        </div>
+    </div>
+    <div class="list-container" >
+        <form id="list-form" style="display:none;">
+            <div>
                 <input type="text" id="list-name" placeholder="Add List..." required>
-                <input type="submit" value="Create List" class="button">
-                <button class="ListButton" onclick="listView(event)">View List</button>
+                <input type="submit" value="Create List" class="button" onclick="createList(event)">
             </div>
         </form>
-        <ul></ul>
+        <div id="main-div-list">  </div> 
     </div>
     <!---Add Task  -->
-    <div class="task-container" style="display:none">
-        <form id="task-form">
-            <h3>Add Tasks</h3>
-            <div id="lName">
-                <p>Display List Name</p>
-            </div>
-            <div class="form-container">
-                <div>
-                    <textarea id="task-note" name="task-note" rows="10" col="100" placeholder="add notes..."></textarea>
+    <div class="task-container">
+        <div id="task-form">
+            <div class="show-taskList-container" style="display:none;">
+                <div class="task-div">
+                    <input type="checkbox" id="selTask" onclick="completeTask(event)">
+                    <input type="text" id="task-name" placeholder="New Task..." onkeyup="createTask(event)">
+                    <button id="more-info-btn" onclick="addTaskInfo(event)"> <i class="fa fa-sort-desc" ></i></button>
                 </div>
-                <div class="block-2">
+                <div class="task-div-2"></div>
+            </div>
+            <div class="show-more-info" style="display:none;">
+                <div>
+                    <textarea id="task-note" name="tasknote" rows="10" col="50" placeholder="add notes..." required></textarea>
+                </div>
+                <div class="block-4" >
                     <div>
                         <label>Due Date</label>
-                        <input id="due-date" type="date" name="duedate" value="">
+                        <input id="due-date" type="date" name="duedate" value="" required>
                     </div>
                     <div>
                         <label>Priority</label>
@@ -43,29 +59,13 @@
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    <div class="block-3">
-                        <input class="button" type="submit" value="Add Task" name="submit">
-                        <input class="button" type="submit" value="Cancel" name="cancel">
+                    <div class="t-block-btn">
+                        <input class="button" type="submit" value="Back" onclick="goToListPage(event)">
+                        <input class="button" type="submit" value="Delete"  onclick="deleteTask(event)">
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <!--Listing Tasks-->
-    <div class="viewlist-container" style="display:none">
-            <button class="ListButton" title="Category" onclick="displayTasks()">Go To Add List</button>
-        <form id="task-list">
-            <table>
-                <thead>
-                    <th> List Name</th>
-                    <th> Tasks</th>
-                </thead>
-                <tbody>
-                    <td>Personal</td>
-                    <td>Health</td>
-                </tbody>
-            </table>    
-        </form>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
