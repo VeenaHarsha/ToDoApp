@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    
 }
 h2 {
     text-align: center;
@@ -9,15 +10,14 @@ h3 {
 }
 body {
     background-color: #f4f4f4;
-    /* line-height: 1.5em; */
     font: normal;
 }
 .ui-list-div p { 
     color:black; 
-    text-align: center;
+    /* text-align: center; */
 } 
 .ui-list-div { 
-    margin-top:1.2em;
+    /* margin-top:1.2em; */
     background-color:aliceblue; /*rgb(0, 255, 213);*/
     height:auto; 
     width :8em;
@@ -32,28 +32,34 @@ ul li {
 .list-container, .task-container{
     width: 80%;
     margin:auto;
-    border:1px gainsboro dotted ;
+    border:1px gainsboro solid ;
     padding:5px;
 }
 
-#list-form  input[type='text']{
-    width:50%;
+#list-form  input[type='text'],#search-form input[type='text']{
+    width:30%;
     padding: 10px;
     justify-content: center;
     margin-left: 33%;
+    margin-bottom: .8em;
 }
-/*#task-list-form input[type='text']{*/
+.tdiv  input[type='text']{
+    width:80%;
+    padding: 10px;
+    margin:5px;
+    margin-left:25px;
+    justify-content: center;
+}
 .task-div input[type='text']{
     width:80%;
     padding: 10px;
+    margin:5px;
     justify-content: center;
-    /* margin-left: 33%; */
 }
 .button ,.ListButton {
     background-color: #333;
     border:none;
     color:#fff;
-    /* margin-left: 10%; */
     padding:10px;
 }
 .ListButton1{
@@ -67,21 +73,17 @@ ul li {
     color: white;
 }
 
-#task-form ,#list-form{
-    width:80%
+#list-form{
+    width:80%;
 }
-.show-taskList-container{
+#task-form {
+    width:80%;
+    margin:auto;
+}
+.show-taskList{
     width:100%;
 }
-.task-div-2{
-   margin:2px
-}
-.task-div-2 input[type='text']{
-    width:80%;
-    padding: 10px;
-    justify-content: center;
-    /* margin-left: 33%; */
-}
+
  #lName{
     margin-left:53%
 }
@@ -90,11 +92,12 @@ ul li {
     padding: 10px;
 }
 .show-more-info{
-    width:100%;
-    padding: 10px;
+    width:50%;
+    padding: 2px;
     justify-content: center;
+    margin: auto;
     /* margin-left:33%; */
-    display: grid;
+    /* display: grid; */
     /* align-items: flex-start; */
 }
 .task-grid {
@@ -117,7 +120,7 @@ ul li {
     width:100%;
     background-color:#444;
 }
-.nav-bar .block-1, .block-3 {
+ .block-1, .block-3 {
     justify-self: center;
     padding:10px 15px;
     /* margin-left:15px; */
@@ -144,4 +147,15 @@ ul li {
 }
 .main-div-display {
     display:flex;justify-content:space-evenly;
+}
+.inner-p{
+   text-align: Left;
+   /* overflow : hidden; */
+   /* text-overflow: ellipsis; */
+   /* width : 25px; */
+   white-space: nowrap; 
+   width: 80px; 
+   height:50px;
+   overflow: hidden;
+   text-overflow: ellipsis; 
 }
