@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    
 }
 h2 {
     text-align: center;
@@ -18,11 +17,10 @@ body {
 } 
 .ui-list-div { 
     /* margin-top:1.2em; */
-    background-color:aliceblue; /*rgb(0, 255, 213);*/
+    background-color:rgb(161, 243, 229);
     height:auto; 
     width :8em;
     height:8em;
-    border:1px solid blue
 } 
 
 ul li {
@@ -32,7 +30,7 @@ ul li {
 .list-container, .task-container{
     width: 80%;
     margin:auto;
-    border:1px gainsboro solid ;
+    /* border:1px gainsboro solid ; */
     padding:5px;
 }
 
@@ -134,7 +132,6 @@ ul li {
      display:grid;
      grid-template-columns: 1fr 1fr 1fr;
      grid-gap:1px;
-     /* grid-template-columns: [first] 10px [second] 10px [third] 20px ; */
     justify-self: center;
     
 }
@@ -146,13 +143,12 @@ ul li {
     border-style: groove;
 }
 .main-div-display {
-    display:flex;justify-content:space-evenly;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr ;
+    justify-content:space-evenly;
 }
 .inner-p{
    text-align: Left;
-   /* overflow : hidden; */
-   /* text-overflow: ellipsis; */
-   /* width : 25px; */
    white-space: nowrap; 
    width: 80px; 
    height:50px;

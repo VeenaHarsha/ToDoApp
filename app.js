@@ -3,14 +3,14 @@ const listBlock = document.querySelector('.list-container')
 const taskAddBlock = document.querySelector('.task-container')
 const listName = document.getElementById('list-name')
 const mainDivList = document.getElementById('main-div-list')
-const uiDiv = document.querySelector('.ui-list-div') // For building UI list
+const uiDiv = document.querySelector('.ui-list-div') 
 const taskList = document.querySelector('.show-taskList')
 const taskNotes = document.getElementById('task-note')
 const dueDate = document.getElementById('due-date')
 const priority = document.getElementById('prId')
 const moreInfoBtn = document.getElementById('more-info-btn')
 const moreInfo = document.querySelector('.show-more-info')
-const taskDiv = document.querySelector('.task-div') // For building UI tasks
+const taskDiv = document.querySelector('.task-div') 
 const newListBtn = document.getElementById('listId')
 const goBackBtn = document.getElementById('goback')
 const taskDiv2 = document.getElementById('task-div-2')
@@ -21,12 +21,11 @@ const searchForm = document.getElementById('search-form')
 const searchBtn = document.getElementById('searchList')
 const search = document.getElementById('search')
 
-let currListId,currTaskId
+let currListId , currTaskId
 let isTaskDone = false
 
 let listItems = localStorage.getItem('listItems') ?
     JSON.parse(localStorage.getItem('listItems')) : []
-
 let taskItems = localStorage.getItem('taskItems') ?
     JSON.parse(localStorage.getItem('taskItems')) : []
 
@@ -66,20 +65,29 @@ function buildListItems(list) {
     const div2 = document.createElement('DIV')
     const outerP = document.createElement('P')
     const innerP = document.createElement('P')
+    const liDelete = document.createElement('i')
+    liDelete.setAttribute('class', 'fa fa-trash')
+    liDelete.addEventListener('click',deleteListItem)
     div2.setAttribute('id', list.id)
     div1.setAttribute('class', 'show-task-list')
     innerP.innerHTML = getTaskName(list.id) || 'No Tasks'
     innerP.setAttribute('class', 'inner-p')
-   
     div2.appendChild(innerP)
     div2.setAttribute('class', 'ui-list-div')
     div2.setAttribute('lname', 'list.listName')
     div2.addEventListener('click', showTaskList)
     div1.appendChild(div2)
     outerP.textContent = list.listName
+    outerP.appendChild(liDelete)
     mainDivList.setAttribute('class', 'main-div-display')
     div1.appendChild(outerP)
     mainDivList.appendChild(div1)
+}
+function deleteListItem(event){
+    let listId = event.target.parentNode.previousSibling.id
+    listItems.splice(listItems.findIndex(ele => ele.id === listId),1)            
+    localStorage.setItem('listItems',JSON.stringify(listItems))
+    event.currentTarget.parentNode.parentNode.remove()
 }
 //Filtering  tasks on list id
 function selListTasks(listId) {
@@ -138,61 +146,6 @@ function createTask(event) {
         event.target.value = ''
     }
 }
-function updateTask(taskId){
-//    console.log(event.target.parentNode.parentNode.parentNode.previousSibling.firstChild.id)
-   const div1 = document.createElement('DIV')
-   const tArea = document.createElement('TEXTAREA')
-   tArea.setAttribute('id','task-note')
-   tArea.setAttribute('rows','10')
-   tArea.setAttribute('cols','10')
-   tArea.setAttribute('placeholder','add notes...')
-   div1.appendChild(tArea)
-   moreInfo.appendChild(div1)
-
-   const div2 = document.createElement('DIV')
-   div2.setAttribute('class','block-4')
-   const innDiv1 = document.createElement('DIV')
-   const label1 = document.createElement('LABEL') 
-   label1.textContent = 'Due Date'
-   const dateInput = document.createElement('INPUT')
-   dateInput.setAttribute('id','due-date')
-   dateInput.setAttribute('type','date')
-   innDiv1.appendChild(label1)
-   innDiv1.appendChild(dateInput)
-   div2.appendChild(innDiv1)
-
-   const innDiv2 = document.createElement('DIV')
-   const label2 = document.createElement('LABEL') 
-   label2.textContent = 'Priority'
-   const priority = document.createElement('SELECT')
-   priority.setAttribute('id','prId')
-   const option1 = document.createElement('OPTION')
-   option1.text = 'High'
-   priority.add(option1)
-
-   const option2 = document.createElement('OPTION')
-   option2.text = 'Medium'
-   priority.add(option2)
-
-   const option3 = document.createElement('OPTION')
-   option3.text = 'Low'
-   priority.add(option3)
-
-   innDiv2.appendChild(label2)
-   innDiv2.appendChild(priority)
-   div2.appendChild(innDiv2)
-
-   const innDiv3 = document.createElement('DIV')
-   innDiv3.setAttribute('class','t-block-btn')
-   const delButton = document.createElement('INPUT')
-   delButton.setAttribute('type','submit')
-   delButton.setAttribute('class','button')
-   delButton.setAttribute('value','Delete')
-   delButton.addEventListener('click',deleteTask)
-   innDiv3.appendChild(delButton)
-   div2.appendChild(innDiv3)
-   moreInfo.appendChild(div2)
-}
 //Building Task Info
 function buildTaskItems(task) {
     console.log("Task From Build Task : ",task)
@@ -205,58 +158,47 @@ function buildTaskItems(task) {
     button.appendChild(iTag)
     button.setAttribute('class', '.button')
     button.setAttribute('id', 'more-info-btn')
-    
     button.addEventListener('click', addTaskInfo)
-
     checkbox.setAttribute('type', 'checkbox')
     checkbox.setAttribute('id', 'selTask')
    // checkbox.addEventListener('change', isCompleted)
     input.setAttribute('type', 'text')
     input.setAttribute('id', 'task-name')
     input.value = task.name
-    
     div1.setAttribute('id',task.id)
-
     div1.appendChild(checkbox)
     div1.appendChild(input)
     div1.appendChild(button)
     div1.setAttribute('class', 'task-div')
     taskDiv2.appendChild(div1)
 }
-
-// moreInfoBtn.addEventListener('click', addTaskInfo)
+function updateTask(event){
+    event.preventDefault()
+    for (const task of taskItems) {
+        if(task.id === Number(currTaskId)) {
+            task.notes = taskNotes.value
+            task.dueDate = dueDate.value
+            task.taskDone = isTaskDone
+            task.priority = priority[priority.selectedIndex].value
+        }
+    }
+    localStorage.setItem('taskItems', JSON.stringify(taskItems))
+    moreInfo.style.display = 'none'
+}
 //adding more task info
 function addTaskInfo(event) {
-    console.log("Know the Task Id :" ,event.target.parentNode.id)
-    console.log("Know the Task Name: " ,event.target.parentNode)
-    currTaskId = event.target.parentNode.id
+    currTaskId = event.target.parentNode.id //|| event.target.parentNode.parentNode.id
     event.preventDefault()
     if (moreInfo.style.display === 'none') {
         taskList.style.display = 'block'
         moreInfo.style.display = 'block'
         listBlock.style.display = 'none'
-        
-        // createTask(event)
     } else {
         moreInfo.style.display = 'none'
         listBlock.style.display = 'none'
         taskList.style.display = 'block'
     }
-   updateTask(currTaskId)
 }
-// selectTask.addEventListener('change', isCompleted)
-//checking Is Task Done
-/*
-function isCompleted() {
-    if (selectTask.checked) {
-        isTaskDone = true
-        taskName.style.setProperty('text-decoration', 'line-through')
-    } else {
-        isTaskDone = false
-        taskName.style.setProperty('text-decoration', 'none')
-    }
-}
-*/
 function goToListPage(event) {
     event.preventDefault()
     listBlock.style.display = 'block'
@@ -265,5 +207,5 @@ function goToListPage(event) {
 function deleteTask(event) {
     console.log(event)
     event.preventDefault()
-    console.log('Need to delete the Task : ', event.target.id)
+    console.log('Need to delete the Task : ', event)
 }
