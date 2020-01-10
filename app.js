@@ -28,19 +28,26 @@ let listItems = localStorage.getItem('listItems') ?
     JSON.parse(localStorage.getItem('listItems')) : []
 let taskItems = localStorage.getItem('taskItems') ?
     JSON.parse(localStorage.getItem('taskItems')) : []
-
-listItems.forEach(ele => buildListItems(ele))
-
+//DIsplay Items on Load
+loadLists()
+function loadLists(){
+    console.log("1")
+    mainDivList.innerHTML=''
+    // taskAddBlock.style.display = 'none'
+    listItems.forEach(ele => buildListItems(ele))
+}
 //Display Add List form on clicking List button
 newListBtn.addEventListener('click', () => {
+    console.log("2")
     if (listForm.style.display === 'none') {
         listForm.style.display = 'block'
     } else {
         listForm.style.display = 'none'
     }
 })
-//On submit of List
+//Create List item
 function createList(event) {
+    console.log("3")
     event.preventDefault()
     const listObject = {
         id: listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
@@ -52,15 +59,9 @@ function createList(event) {
     listName.value = ''
     listForm.style.display = 'none'
 }
-function getTaskName(lId) {
-    let tNames = ''
-    for (let task of taskItems) {
-        if (Number(task.listId) === lId) tNames += task.name +'<br>'
-    }
-    return tNames
-}
 //building list dynamically
 function buildListItems(list) {
+    console.log("4")
     const div1 = document.createElement('DIV')
     const div2 = document.createElement('DIV')
     const outerP = document.createElement('P')
@@ -83,14 +84,28 @@ function buildListItems(list) {
     div1.appendChild(outerP)
     mainDivList.appendChild(div1)
 }
+//Delete List
 function deleteListItem(event){
+    console.log("5")
     let listId = event.target.parentNode.previousSibling.id
-    listItems.splice(listItems.findIndex(ele => ele.id === listId),1)            
+    let index = listItems.findIndex(ele => ele.id === listId)
+    listItems.splice(index,1)            
     localStorage.setItem('listItems',JSON.stringify(listItems))
     event.currentTarget.parentNode.parentNode.remove()
 }
+function getTaskName(lId) {
+    console.log("6")
+    let tNames = ''
+    taskItems.filter(ele => {
+        if(Number(ele.listId) === Number(lId)){
+            tNames += ele.name +'<br>' 
+        }
+    })
+    return tNames
+}
 //Filtering  tasks on list id
-function selListTasks(listId) {
+function getListTasks(listId) {
+    console.log("7")
     let listTasks = []
     for (let task of taskItems) {
         if (task.listId === listId) listTasks.push(task)
@@ -99,24 +114,29 @@ function selListTasks(listId) {
 }
 //Showing task list
 function showTaskList(event) {
+    console.log("8")
     console.log("From ShowtaskList: List Id:", event.target.parentElement.id)
         currListId = event.target.id || event.target.parentElement.id //ch
-        if (taskList.style.display === 'none') {
-           taskList.style.display = 'block'
+        if (currListId) {
             goBackBtn.style.display = 'block'
             listBlock.style.display = 'none'
+            taskAddBlock.style.display = 'block'
             newListBtn.style.display = 'none'
+            taskList.style.display = 'block'
         } else {
             taskList.style.display = 'none'
-            goBackBtn.style.display = 'block'
-            listBlock.style.display = 'none'
-            newListBtn.style.display = 'none'
+            goBackBtn.style.display = 'none'
+            taskAddBlock.style.display = 'none'
+            listBlock.style.display = 'block'
+            newListBtn.style.display = 'block'
         }
-        let currListTasks = selListTasks(currListId)
+        taskDiv2.innerHTML = ''
+        let currListTasks = getListTasks(currListId)
         if (currListTasks)  currListTasks.forEach(task => buildTaskItems(task))
 }
 //go back to list page
 goBackBtn.addEventListener('click', (event) => {
+    console.log("9")
     event.preventDefault()
     taskList.style.display = 'none'
     taskAddBlock.style.display = 'none'
@@ -124,10 +144,13 @@ goBackBtn.addEventListener('click', (event) => {
     listForm.style.display = 'none'
     newListBtn.style.display = 'block'
     listBlock.style.display = 'block'
+    currListId =''
+    loadLists()
 })
 //Creat and Add Task Details
 taskName.addEventListener('keypress', createTask)
 function createTask(event) {
+    console.log("10")
     if(event.target.value === '') return
     if (event.keyCode === 13 || event.type === "click") {
         event.preventDefault()
@@ -148,6 +171,7 @@ function createTask(event) {
 }
 //Building Task Info
 function buildTaskItems(task) {
+    console.log("11")
     console.log("Task From Build Task : ",task)
     const div1 = document.createElement('DIV')
     const checkbox = document.createElement('INPUT')
@@ -173,6 +197,7 @@ function buildTaskItems(task) {
     taskDiv2.appendChild(div1)
 }
 function updateTask(event){
+    console.log("12")
     event.preventDefault()
     for (const task of taskItems) {
         if(task.id === Number(currTaskId)) {
@@ -187,24 +212,29 @@ function updateTask(event){
 }
 //adding more task info
 function addTaskInfo(event) {
+    console.log("13")
     currTaskId = event.target.parentNode.id //|| event.target.parentNode.parentNode.id
     event.preventDefault()
     if (moreInfo.style.display === 'none') {
-        taskList.style.display = 'block'
+        // taskList.style.display = 'block'
         moreInfo.style.display = 'block'
         listBlock.style.display = 'none'
+        taskList.insertAdjacentElement('afterend', moreInfo)
+        // taskDiv2.insertAdjacentElement('afterend', moreInfo)
     } else {
         moreInfo.style.display = 'none'
         listBlock.style.display = 'none'
-        taskList.style.display = 'block'
+        // taskList.style.display = 'block'
     }
 }
 function goToListPage(event) {
+    console.log("14")
     event.preventDefault()
     listBlock.style.display = 'block'
     taskAddBlock.style.display = 'none'
 }
 function deleteTask(event) {
+    console.log("15")
     console.log(event)
     event.preventDefault()
     console.log('Need to delete the Task : ', event)
