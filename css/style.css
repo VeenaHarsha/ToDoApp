@@ -94,11 +94,14 @@ ul li {
     width : 100%;
     padding: 10px;
 }
-.show-more-info{
+.show-more-info {
     width:50%;
+    display: flex;
     padding: 2px;
     justify-content: center;
     margin: auto;
+    /* width:200px; */
+    /* height:100px; */
     /* margin-left:33%; */
     /* display: grid; */
     /* align-items: flex-start; */
@@ -108,7 +111,8 @@ ul li {
     grid-template-columns: .5fr 7fr .3fr;
 }
 .block-4 {
-    margin-left: 33%;
+    margin-left: 5%;
+    width:50%;
 }
 .block-4 div {
     padding: 10px;
@@ -162,4 +166,7 @@ ul li {
 }
 .outer-p{
     padding: 5px;
+}
+.t-block-btn{
+    padding-inline: 20px;
 }

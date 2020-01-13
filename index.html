@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>To Do</title>
 </head>
+
 <body>
     <div class="main-container">
         <div class="nav-bar">
-            <button class="block-1" id="listId">New List</button>
+            <button class="block-1" id="newList">New List</button>
             <button class="block-1" id="goback" style="display: none;">Back</button>
             <div class="btn-group">
                 <button class="block-2 active">Lists</button>
@@ -21,56 +22,55 @@
             <div class="btn-group">
                 <input type="text" id="currListName" style="display:none;">
             </div>
-            
-            <button class="block-3"  id="searchList">Search</button>
+
+            <button class="block-3" id="searchList">Search</button>
         </div>
     </div>
 
     <div class="list-container">
         <form id="list-form" style="display:none;">
-            <div>
-                <input type="text" id="list-name" placeholder="Add List..." required>
-                <input type="submit" value="Create List" class="button" onclick="createList(event)">
-            </div>
+            <input type="text" id="list-name" placeholder="Add List..." required>
+            <input type="submit" value="Create List" class="button" onclick="createList(event)">
         </form>
         <div id="main-div-list"> </div>
     </div>
     <!---Add Task  -->
     <div class="task-container">
-        <div id="task-form">
+        <!-- <div id="task-form"> -->
             <div class="show-taskList">
                 <div id="task-div-2" class="task-div"> </div>
                 <div class="show-more-info" style="display:none;">
-                    <div>
-                        <textarea id="task-note" name="tasknote" rows="10" col="10" placeholder="add notes..."
-                            required></textarea>
-                    </div>
-                    <div class="block-4">
                         <div>
-                            <label>Due Date</label>
-                            <input id="due-date" type="date" name="duedate" value="" required>
+                            <textarea id="task-note" name="tasknote" rows="10" col="10" placeholder="add notes..."
+                                required></textarea>
                         </div>
-                        <div>
-                            <label>Priority</label>
-                            <select id="prId">
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        <div class="t-block-btn">
-                            <input type="submit" value="Update" class="button" onclick="updateTask(event)">
-                            <input type="submit" value="Delete" class="button" onclick="deleteTask(event)">
-                        </div>
+                        <div class="block-4">
+                            <div>
+                                <label>Due Date</label>
+                                <input id="due-date" type="date" name="duedate" value="" required>
+                            </div>
+                            <div>
+                                <label>Priority</label>
+                                <select id="prId">
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="t-block-btn">
+                                <input type="submit" value="Update" class="button" onclick="updateTask(event)">
+                                <input type="submit" value="Delete" class="button" onclick="deleteTask(event)">
+                            </div>
+                         </div>
                     </div>
-                </div>
-                <div class="tdiv">
-                    <input type="text" id="task-name" placeholder="Add New Task...">
-                </div>
+                    <div class="tdiv">
+                        <input type="text" id="task-name" placeholder="Add New Task...">
+                    </div>
             </div>
             <!-- <div class="show-more-info" ></div> -->
-        </div> 
+        <!-- </div> -->
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>
