@@ -78,7 +78,6 @@ ul li {
     background-color: #666;
     color: white;
 }
-
 #list-form{
     width:80%;
 }
@@ -89,7 +88,6 @@ ul li {
 .show-taskList{
     width:100%;
     display: none;
-
 }
 .show-taskList > i{
  float: right;   
@@ -107,11 +105,6 @@ ul li {
     padding: 2px;
     justify-content: center;
     margin: auto;
-    /* width:200px; */
-    /* height:100px; */
-    /* margin-left:33%; */
-    /* display: grid; */
-    /* align-items: flex-start; */
 }
 .task-grid {
     display: grid;
@@ -126,12 +119,7 @@ ul li {
     display: block;
 }
 .block-3 .button {
-    /* float: right; */
     justify-self: center;
-    /* background-color: #444; */
-    /* color:#fff; */
-    /* border-radius:8px; */
-    /* border-color:#444; */
     border-style: groove;
 }
 .nav-bar {
@@ -155,7 +143,6 @@ ul li {
      grid-template-columns: 1fr 1fr 1fr;
      grid-gap:1px;
     justify-self: center;
-    
 }
 .block-2 {
     background-color: #444;
@@ -197,4 +184,37 @@ ul li {
     color: black;
     border: none;
     }
-    
+.popup {
+    position: relative;
+    /* display: inline-block; */
+    cursor: pointer;
+    user-select: none;
+}    
+.popup .popuptext {
+    visibility: hidden;
+    width: 80px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    /* bottom: 25%; */
+    left: 40%;
+    margin-top: 10px;
+  }
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    /* top: 100%; */
+    /* left: 50%; */
+    /* margin-left: -5px; */
+    /* border-width: 5px; */
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }  
+  .popup .show {
+    visibility: visible;
+  }
+  

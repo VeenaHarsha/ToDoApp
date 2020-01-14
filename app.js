@@ -19,6 +19,9 @@ const searchForm = document.getElementById('search-form')
 const searchName = document.getElementById('search-name')
 const selectedTask = document.getElementById('selTask')
 const renameDiv = document.getElementById('rename-list')
+const today = document.getElementById('today-id')
+const listNav = document.getElementById('list-id')
+const filterBtn = document.getElementById('filterBtn')
 
 let listItems = localStorage.getItem('listItems') ?
     JSON.parse(localStorage.getItem('listItems')) : []
@@ -56,7 +59,6 @@ function createList(event) {
 }
 
 function buildListItems(list) {
-    console.log("List Object is : ", list)
     const div1 = document.createElement('div')
     const div2 = document.createElement('div')
     const innerP = document.createElement('p')
@@ -90,7 +92,7 @@ function renameList(event){
     let lId = event.target.parentNode.firstChild.id
     let list = JSON.parse(localStorage.getItem(lId))
     list.listName = newName
-   localStorage.setItem(lId, JSON.stringify(list))
+    localStorage.setItem(lId, JSON.stringify(list))
 }
 
 function deleteListItem(event) {
@@ -125,7 +127,7 @@ function createTask(event) {
 }
 
 function showTaskList(event) {
-    currListId = /*event.target.id || */ event.target.parentElement.id 
+    currListId = event.target.parentElement.id 
     if (currListId) {
         goBackBtn.style.display = 'block'
         listBlock.style.display = 'none'
@@ -145,7 +147,6 @@ function showTaskList(event) {
 }
 
 function buildTaskItems(task) {
-    console.log("Task From Build Task : ", task)
     const div1 = document.createElement('DIV')
     const checkbox = document.createElement('INPUT')
     const input = document.createElement('INPUT')
@@ -187,14 +188,13 @@ function setMoreInfoDetails(task){
             taskNotes.value = t.notes
             priority.value = t.priority
             dueDate.value = t.dueDate
-            //selectedTask.checked = t.taskDone
         }
     }
 }
 
 function addMoreInfo(event) {
     currTaskId = event.target.parentNode.getAttribute('taskId')
-    let ele = event.target //|| event.target.parentNode.parentNode.id
+    let ele = event.target 
     event.preventDefault()
     if (moreInfo.style.display === 'none') {
         moreInfo.style.display = 'flex'
@@ -214,7 +214,6 @@ function isCompleted(event) {
     let tID = event.target.parentNode.getAttribute('taskId')
     for(let t of curTask){
         if(t.id === Number(tID)){
-            console.log('Found the taskname: ',t.name)
             if (event.target.checked) t.taskDone = true
             else t.taskDone = false
         }
@@ -284,15 +283,36 @@ searchBtn.addEventListener('click', () => {
 function searchList(event) {
     event.preventDefault()
     mainDivList.innerHTML = ''
-    for(let t in listItems){
-        let lName = JSON.parse(localStorage.getItem(listItems[t])).listName.toLowerCase()
+    for(let li in listItems){
+        let lName = JSON.parse(localStorage.getItem(listItems[li])).listName.toLowerCase()
       if(lName.includes(searchName.value.toLowerCase())){
-         buildListItems(JSON.parse(localStorage.getItem(listItems[t])))
+         buildListItems(JSON.parse(localStorage.getItem(listItems[li])))
       }
     }
     searchName.value =''
     searchForm.style.display = 'none'
 }
+
+filterBtn.addEventListener('click',clearCompleted)
+function clearCompleted(event){
+    event.preventDefault()
+    let currList = JSON.parse(localStorage.getItem(currListId))
+    let curTask = currList.tasks
+     curTask = curTask.filter(ele => !ele.taskDone)
+     currList.tasks = curTask
+     localStorage.setItem(currListId, JSON.stringify(currList))
+     taskDiv2.innerHTML=''
+     curTask.forEach(task => buildTaskItems(task))
+}
+
+today.addEventListener('click',getTodayTasks)
+function getTodayTasks(event){
+    console.log(event.target)
+    mainDivList.style.display = 'none'
+}
+
+
+
 const header = document.getElementById("myDIV");
 const btns = header.getElementsByClassName("block-2");
 for (var i = 0; i < btns.length; i++) {
