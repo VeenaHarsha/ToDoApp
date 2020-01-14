@@ -14,6 +14,11 @@ const priority = document.getElementById('prId')
 const moreInfoBtn = document.getElementById('more-info-btn')
 const moreInfo = document.querySelector('.show-more-info')
 const taskDiv = document.querySelector('.task-div')
+const searchBtn = document.getElementById('searchBtn')
+const searchForm = document.getElementById('search-form')
+const searchName = document.getElementById('search-name')
+const selectedTask = document.getElementById('selTask')
+const renameDiv = document.getElementById('rename-list')
 
 let listItems = localStorage.getItem('listItems') ?
     JSON.parse(localStorage.getItem('listItems')) : []
@@ -29,6 +34,7 @@ function loadLists() {
 newListBtn.addEventListener('click', () => {
     if (listForm.style.display === 'none') {
         listForm.style.display = 'block'
+        searchForm.style.display = 'none'
     } else {
         listForm.style.display = 'none'
     }
@@ -53,15 +59,16 @@ function buildListItems(list) {
     console.log("List Object is : ", list)
     const div1 = document.createElement('div')
     const div2 = document.createElement('div')
-    const outerP = document.createElement('p')
     const innerP = document.createElement('p')
-
     const imgDelete = document.createElement('img')
+    const newName = document.createElement('INPUT')
+    newName.setAttribute('type','text')
+    newName.setAttribute('class','new-name')
     imgDelete.setAttribute('src', 'images/trash_1.png')
     imgDelete.setAttribute('width', '20')
     imgDelete.setAttribute('height', '20')
-    imgDelete.addEventListener('click', deleteListItem)
     imgDelete.setAttribute('id', list.id)
+    imgDelete.addEventListener('click', deleteListItem)
     div1.setAttribute('class', 'show-task-list')
     innerP.innerHTML = getTaskName(list) || 'No Tasks'
     innerP.setAttribute('class', 'inner-p')
@@ -70,11 +77,20 @@ function buildListItems(list) {
     div2.setAttribute('class', 'ui-list-div')
     div2.addEventListener('click', showTaskList)
     div1.appendChild(div2)
-    outerP.textContent = list.listName
-    outerP.appendChild(imgDelete)
+    newName.value =  list.listName
+    newName.addEventListener('keyup',renameList)
+    div1.appendChild(imgDelete)
     mainDivList.setAttribute('class', 'main-div-display')
-    div1.appendChild(outerP)
+    div1.appendChild(newName)
     mainDivList.appendChild(div1)
+}
+
+function renameList(event){
+    let newName = event.currentTarget.value
+    let lId = event.target.parentNode.firstChild.id
+    let list = JSON.parse(localStorage.getItem(lId))
+    list.listName = newName
+   localStorage.setItem(lId, JSON.stringify(list))
 }
 
 function deleteListItem(event) {
@@ -83,7 +99,7 @@ function deleteListItem(event) {
     let index = listItems.findIndex(ele => ele === Number(lId))
     listItems.splice(index, 1)
     localStorage.setItem('listItems', JSON.stringify(listItems))
-    event.currentTarget.parentNode.parentNode.remove()
+    event.currentTarget.parentNode.remove()
 }
 
 taskName.addEventListener('keypress', createTask)
@@ -109,7 +125,7 @@ function createTask(event) {
 }
 
 function showTaskList(event) {
-    currListId = event.target.id || event.target.parentElement.id //ch
+    currListId = /*event.target.id || */ event.target.parentElement.id 
     if (currListId) {
         goBackBtn.style.display = 'block'
         listBlock.style.display = 'none'
@@ -139,10 +155,12 @@ function buildTaskItems(task) {
     img.setAttribute('width', '20')
     img.setAttribute('height', '20')
     img.setAttribute('id', 'more-info-btn')
-    img.setAttribute('taskId', task.id)
+    div1.setAttribute('taskId', task.id)
     img.addEventListener('click', addMoreInfo)
     checkbox.setAttribute('type', 'checkbox')
     checkbox.setAttribute('id', 'selTask')
+    checkbox.addEventListener('change',isCompleted)
+    checkbox.checked = task.taskDone
     input.setAttribute('type', 'text')
     input.setAttribute('id', 'task-name')
     input.value = task.name
@@ -161,20 +179,49 @@ function getTaskName(list) {
     return tNames
 }
 
+function setMoreInfoDetails(task){
+    console.log("Task to set details :",task)
+    let tasks = JSON.parse(localStorage.getItem(currListId)).tasks
+    for(let t of tasks){
+        if(t.id === Number(task)){
+            taskNotes.value = t.notes
+            priority.value = t.priority
+            dueDate.value = t.dueDate
+            //selectedTask.checked = t.taskDone
+        }
+    }
+}
+
 function addMoreInfo(event) {
-    currTaskId = event.target.getAttribute('taskId')
-    let ele = event.target || event.target.parentNode.parentNode.id
+    currTaskId = event.target.parentNode.getAttribute('taskId')
+    let ele = event.target //|| event.target.parentNode.parentNode.id
     event.preventDefault()
-    console.log("More Info : ", event.id)
     if (moreInfo.style.display === 'none') {
         moreInfo.style.display = 'flex'
+        setMoreInfoDetails(currTaskId)
         listBlock.style.display = 'none'
         ele.insertAdjacentElement('afterend', moreInfo)
     } else {
         moreInfo.style.display = 'none'
         listBlock.style.display = 'none'
     }
-    // buildTaskItems(ele)
+}
+
+function isCompleted(event) {
+    event.preventDefault()
+    let currList = JSON.parse(localStorage.getItem(currListId))
+    let curTask = currList.tasks
+    let tID = event.target.parentNode.getAttribute('taskId')
+    for(let t of curTask){
+        if(t.id === Number(tID)){
+            console.log('Found the taskname: ',t.name)
+            if (event.target.checked) t.taskDone = true
+            else t.taskDone = false
+        }
+    }
+    localStorage.setItem(currListId, JSON.stringify(currList))
+    taskDiv2.innerHTML = ''
+    curTask.forEach(task => buildTaskItems(task))
 }
 
 goBackBtn.addEventListener('click', (event) => {
@@ -183,6 +230,7 @@ goBackBtn.addEventListener('click', (event) => {
     taskAddBlock.style.display = 'none'
     goBackBtn.style.display = 'none'
     listForm.style.display = 'none'
+    searchForm.style.display = 'none'
     newListBtn.style.display = 'block'
     listBlock.style.display = 'block'
     currListId = ''
@@ -199,7 +247,6 @@ function tasksFrmList(listId) {
 
 function updateTask(event) {
     event.preventDefault()
-    console.log('Update Task -- Current Task Id : ', currTaskId)
     let currList = JSON.parse(localStorage.getItem(currListId))
     let curTask = currList.tasks
     curTask.forEach(task => {
@@ -210,20 +257,48 @@ function updateTask(event) {
             task.priority = priority[priority.selectedIndex].value
         }
     })
-   
     localStorage.setItem(currListId, JSON.stringify(currList))
-    event.target.value = ''
     moreInfo.style.display = 'none'
 }
 
 function deleteTask(event) {
-    console.log(event)
     event.preventDefault()
-    console.log('Need to delete the Task : ', currTaskId)
     let currList = JSON.parse(localStorage.getItem(currListId))
     let curTask = currList.tasks
-    console.log(curTask)
-     let index = curTask.findIndex(ele => ele.id === Number(currTaskId))
-     curTask.splice(index, 1)
+    let index = curTask.findIndex(ele => ele.id === Number(currTaskId))
+    curTask.splice(index, 1)
     localStorage.setItem(currListId, JSON.stringify(currList))
+    taskDiv2.innerHTML=''
+    curTask.forEach(task => buildTaskItems(task))
+}
+
+searchBtn.addEventListener('click', () => {
+    if (searchForm.style.display === 'none') {
+        listForm.style.display = 'none'
+        searchForm.style.display = 'block'
+    } else {
+        searchForm.style.display = 'none'
+    }
+})
+
+function searchList(event) {
+    event.preventDefault()
+    mainDivList.innerHTML = ''
+    for(let t in listItems){
+        let lName = JSON.parse(localStorage.getItem(listItems[t])).listName.toLowerCase()
+      if(lName.includes(searchName.value.toLowerCase())){
+         buildListItems(JSON.parse(localStorage.getItem(listItems[t])))
+      }
+    }
+    searchName.value =''
+    searchForm.style.display = 'none'
+}
+const header = document.getElementById("myDIV");
+const btns = header.getElementsByClassName("block-2");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
 }

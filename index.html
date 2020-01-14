@@ -14,7 +14,7 @@
         <div class="nav-bar">
             <button class="block-1" id="newList">New List</button>
             <button class="block-1" id="goback" style="display: none;">Back</button>
-            <div class="btn-group">
+            <div id="myDIV" class="btn-group">
                 <button class="block-2 active">Lists</button>
                 <button class="block-2">Today</button>
                 <button class="block-2">Scheduled</button>
@@ -23,7 +23,7 @@
                 <input type="text" id="currListName" style="display:none;">
             </div>
 
-            <button class="block-3" id="searchList">Search</button>
+            <button class="block-3" id="searchBtn"><img src='images/search.png' alt="Search" width='20' height='20'></button>
         </div>
     </div>
 
@@ -32,11 +32,15 @@
             <input type="text" id="list-name" placeholder="Add List..." required>
             <input type="submit" value="Create List" class="button" onclick="createList(event)">
         </form>
+        <form id="search-form" style="display:none;">
+            <input type="text" id="search-name" placeholder="Search.." required>
+            <input type="submit" value="Search" class="button" onclick="searchList(event)">
+        </form>
         <div id="main-div-list"> </div>
+        <div id="rename-list"></div>
     </div>
     <!---Add Task  -->
     <div class="task-container">
-        <!-- <div id="task-form"> -->
             <div class="show-taskList">
                 <div id="task-div-2" class="task-div"> </div>
                 <div class="show-more-info" style="display:none;">
@@ -68,7 +72,6 @@
                     </div>
             </div>
             <!-- <div class="show-more-info" ></div> -->
-        <!-- </div> -->
     </div>
     <script src="app.js"></script>
 </body>

@@ -55,7 +55,14 @@ ul li {
     margin:5px;
     justify-content: center;
 }
-.button ,.ListButton {
+.button {
+    background-color: #333;
+    margin:auto;
+    border:none;
+    color:#fff;
+    padding:10px;
+}
+.ListButton {
     background-color: #333;
     border:none;
     color:#fff;
@@ -119,7 +126,13 @@ ul li {
     display: block;
 }
 .block-3 .button {
-    float: right;
+    /* float: right; */
+    justify-self: center;
+    /* background-color: #444; */
+    /* color:#fff; */
+    /* border-radius:8px; */
+    /* border-color:#444; */
+    border-style: groove;
 }
 .nav-bar {
     display: grid;
@@ -127,7 +140,7 @@ ul li {
     width:100%;
     background-color:#444;
 }
- .block-1, .block-3 {
+ .block-1{
     justify-self: center;
     padding:10px 15px;
     /* margin-left:15px; */
@@ -144,13 +157,18 @@ ul li {
     justify-self: center;
     
 }
-.btn-group .block-2 {
+.block-2 {
     background-color: #444;
     color:#fff;
     border-radius:8px;
     border-color:#444;
-    border-style: groove;
+    border-style: groove; 
 }
+.active, .block-2:hover {
+    background-color: rgb(48, 47, 47);
+    color: white;
+    font-weight: bold;
+  }
 .main-div-display {
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr ;
@@ -167,6 +185,16 @@ ul li {
 .outer-p{
     padding: 5px;
 }
-.t-block-btn{
+.block-4 >.t-block-btn{
     padding-inline: 20px;
+    margin:auto;
+    border:none;
+    color:#fff;
+    padding:10px;
 }
+.new-name {
+    background-color: rgba(0,0,0,0);
+    color: black;
+    border: none;
+    }
+    
