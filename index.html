@@ -19,10 +19,8 @@
                 <button id="today-id" class="block-2">Today</button>
                 <button id="sch-id" class="block-2">Scheduled</button>
             </div>
-            <button id="filterBtn" ><img src='images/filter-1.png' alt="menu" width='20' height='20'>
-                <!-- <span class="popuptext" id="myPopup">Clear Completed Tasks!</span> -->
-            </button>
-            <button class="block-3" id="searchBtn"><img src='images/search.png' alt="Search" width='20' height='20'></button>
+            <button id="filterBtn" class="block-1" style="display: none;">ClearTask</button>
+            <button id="searchBtn" class="block-3" ><img src='images/search-7.png' alt="Search" width='20' height='20'></button>
         </div>
     </div>
 
@@ -70,7 +68,12 @@
                         <input type="text" id="task-name" placeholder="Add New Task...">
                     </div>
             </div>
-            <!-- <div class="show-more-info" ></div> -->
+    </div>
+    <div id="today" class="today-container" style="display: none;">
+        <div id="today-task" class="scheduled-task"> </div>
+    </div>
+    <div id="sch" class="sch-container" style="display: none;">
+        <div id="sch-task" class="scheduled-task"> </div>
     </div>
     <script src="app.js"></script>
 </body>

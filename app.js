@@ -19,9 +19,14 @@ const searchForm = document.getElementById('search-form')
 const searchName = document.getElementById('search-name')
 const selectedTask = document.getElementById('selTask')
 const renameDiv = document.getElementById('rename-list')
-const today = document.getElementById('today-id')
+const todayNav = document.getElementById('today-id')
 const listNav = document.getElementById('list-id')
+const schNav = document.getElementById('sch-id')
 const filterBtn = document.getElementById('filterBtn')
+const todayBlock = document.querySelector('.today-container')
+const todayDiv = document.getElementById('today-task')
+const schBlock = document.querySelector('.sch-container')
+const schDiv = document.getElementById('sch-task')
 
 let listItems = localStorage.getItem('listItems') ?
     JSON.parse(localStorage.getItem('listItems')) : []
@@ -33,7 +38,6 @@ function loadLists() {
     mainDivList.innerHTML = ''
     listItems.forEach(item => buildListItems(JSON.parse(localStorage.getItem(item))))
 }
-
 newListBtn.addEventListener('click', () => {
     if (listForm.style.display === 'none') {
         listForm.style.display = 'block'
@@ -42,7 +46,6 @@ newListBtn.addEventListener('click', () => {
         listForm.style.display = 'none'
     }
 })
-
 function createList(event) {
     event.preventDefault()
     const listObject = {
@@ -57,15 +60,14 @@ function createList(event) {
     listName.value = ''
     listForm.style.display = 'none'
 }
-
 function buildListItems(list) {
     const div1 = document.createElement('div')
     const div2 = document.createElement('div')
     const innerP = document.createElement('p')
     const imgDelete = document.createElement('img')
     const newName = document.createElement('INPUT')
-    newName.setAttribute('type','text')
-    newName.setAttribute('class','new-name')
+    newName.setAttribute('type', 'text')
+    newName.setAttribute('class', 'new-name')
     imgDelete.setAttribute('src', 'images/trash_1.png')
     imgDelete.setAttribute('width', '20')
     imgDelete.setAttribute('height', '20')
@@ -79,22 +81,20 @@ function buildListItems(list) {
     div2.setAttribute('class', 'ui-list-div')
     div2.addEventListener('click', showTaskList)
     div1.appendChild(div2)
-    newName.value =  list.listName
-    newName.addEventListener('keyup',renameList)
+    newName.value = list.listName
+    newName.addEventListener('keyup', renameList)
     div1.appendChild(imgDelete)
     mainDivList.setAttribute('class', 'main-div-display')
     div1.appendChild(newName)
     mainDivList.appendChild(div1)
 }
-
-function renameList(event){
+function renameList(event) {
     let newName = event.currentTarget.value
     let lId = event.target.parentNode.firstChild.id
     let list = JSON.parse(localStorage.getItem(lId))
     list.listName = newName
     localStorage.setItem(lId, JSON.stringify(list))
 }
-
 function deleteListItem(event) {
     let lId = event.currentTarget.getAttribute('id')
     localStorage.removeItem(lId)
@@ -103,7 +103,6 @@ function deleteListItem(event) {
     localStorage.setItem('listItems', JSON.stringify(listItems))
     event.currentTarget.parentNode.remove()
 }
-
 taskName.addEventListener('keypress', createTask)
 function createTask(event) {
     if (event.target.value === '') return
@@ -125,27 +124,35 @@ function createTask(event) {
         event.target.value = ''
     }
 }
-
 function showTaskList(event) {
-    currListId = event.target.parentElement.id 
+    currListId = event.target.parentElement.id
     if (currListId) {
         goBackBtn.style.display = 'block'
         listBlock.style.display = 'none'
         taskAddBlock.style.display = 'block'
         newListBtn.style.display = 'none'
         taskList.style.display = 'block'
+        filterBtn.style.display = 'block'
+        searchBtn.style.display = 'none'
+        listNav.style.display = 'none'
+        todayNav.style.display = 'none'
+        schNav.style.display = 'none'
     } else {
         taskList.style.display = 'none'
         goBackBtn.style.display = 'none'
         taskAddBlock.style.display = 'none'
         listBlock.style.display = 'block'
         newListBtn.style.display = 'block'
+        searchBtn.style.display = 'block'
+        filterBtn.style.display = 'none'
+        listNav.style.display = 'block'
+        todayNav.style.display = 'block'
+        schNav.style.display = 'block'
     }
     taskDiv2.innerHTML = ''
     let currListTasks = JSON.parse(localStorage.getItem(currListId)).tasks
     if (currListTasks) currListTasks.forEach(task => buildTaskItems(task))
 }
-
 function buildTaskItems(task) {
     const div1 = document.createElement('DIV')
     const checkbox = document.createElement('INPUT')
@@ -160,7 +167,7 @@ function buildTaskItems(task) {
     img.addEventListener('click', addMoreInfo)
     checkbox.setAttribute('type', 'checkbox')
     checkbox.setAttribute('id', 'selTask')
-    checkbox.addEventListener('change',isCompleted)
+    checkbox.addEventListener('change', isCompleted)
     checkbox.checked = task.taskDone
     input.setAttribute('type', 'text')
     input.setAttribute('id', 'task-name')
@@ -171,7 +178,6 @@ function buildTaskItems(task) {
     div1.setAttribute('class', 'task-div')
     taskDiv2.appendChild(div1)
 }
-
 function getTaskName(list) {
     let tNames = ''
     list.tasks.forEach(ele => {
@@ -179,22 +185,20 @@ function getTaskName(list) {
     })
     return tNames
 }
-
-function setMoreInfoDetails(task){
-    console.log("Task to set details :",task)
+function setMoreInfoDetails(task) {
+    console.log("Task to set details :", task)
     let tasks = JSON.parse(localStorage.getItem(currListId)).tasks
-    for(let t of tasks){
-        if(t.id === Number(task)){
+    for (let t of tasks) {
+        if (t.id === Number(task)) {
             taskNotes.value = t.notes
             priority.value = t.priority
             dueDate.value = t.dueDate
         }
     }
 }
-
 function addMoreInfo(event) {
     currTaskId = event.target.parentNode.getAttribute('taskId')
-    let ele = event.target 
+    let ele = event.target
     event.preventDefault()
     if (moreInfo.style.display === 'none') {
         moreInfo.style.display = 'flex'
@@ -206,14 +210,13 @@ function addMoreInfo(event) {
         listBlock.style.display = 'none'
     }
 }
-
 function isCompleted(event) {
     event.preventDefault()
     let currList = JSON.parse(localStorage.getItem(currListId))
     let curTask = currList.tasks
     let tID = event.target.parentNode.getAttribute('taskId')
-    for(let t of curTask){
-        if(t.id === Number(tID)){
+    for (let t of curTask) {
+        if (t.id === Number(tID)) {
             if (event.target.checked) t.taskDone = true
             else t.taskDone = false
         }
@@ -222,7 +225,6 @@ function isCompleted(event) {
     taskDiv2.innerHTML = ''
     curTask.forEach(task => buildTaskItems(task))
 }
-
 goBackBtn.addEventListener('click', (event) => {
     event.preventDefault()
     taskList.style.display = 'none'
@@ -232,10 +234,14 @@ goBackBtn.addEventListener('click', (event) => {
     searchForm.style.display = 'none'
     newListBtn.style.display = 'block'
     listBlock.style.display = 'block'
+    listNav.style.display = 'block'
+    todayNav.style.display = 'block'
+    schNav.style.display = 'block'
+    filterBtn.style.display = 'none'
+    searchBtn.style.display = 'block'
     currListId = ''
     loadLists()
 })
-
 function tasksFrmList(listId) {
     let listTasks = []
     for (let task of taskItems) {
@@ -243,7 +249,6 @@ function tasksFrmList(listId) {
     }
     return listTasks
 }
-
 function updateTask(event) {
     event.preventDefault()
     let currList = JSON.parse(localStorage.getItem(currListId))
@@ -259,7 +264,6 @@ function updateTask(event) {
     localStorage.setItem(currListId, JSON.stringify(currList))
     moreInfo.style.display = 'none'
 }
-
 function deleteTask(event) {
     event.preventDefault()
     let currList = JSON.parse(localStorage.getItem(currListId))
@@ -267,10 +271,9 @@ function deleteTask(event) {
     let index = curTask.findIndex(ele => ele.id === Number(currTaskId))
     curTask.splice(index, 1)
     localStorage.setItem(currListId, JSON.stringify(currList))
-    taskDiv2.innerHTML=''
+    taskDiv2.innerHTML = ''
     curTask.forEach(task => buildTaskItems(task))
 }
-
 searchBtn.addEventListener('click', () => {
     if (searchForm.style.display === 'none') {
         listForm.style.display = 'none'
@@ -279,46 +282,116 @@ searchBtn.addEventListener('click', () => {
         searchForm.style.display = 'none'
     }
 })
-
 function searchList(event) {
     event.preventDefault()
     mainDivList.innerHTML = ''
-    for(let li in listItems){
+    for (let li in listItems) {
         let lName = JSON.parse(localStorage.getItem(listItems[li])).listName.toLowerCase()
-      if(lName.includes(searchName.value.toLowerCase())){
-         buildListItems(JSON.parse(localStorage.getItem(listItems[li])))
-      }
+        if (lName.includes(searchName.value.toLowerCase())) {
+            buildListItems(JSON.parse(localStorage.getItem(listItems[li])))
+        }
     }
-    searchName.value =''
+    searchName.value = ''
     searchForm.style.display = 'none'
 }
-
-filterBtn.addEventListener('click',clearCompleted)
-function clearCompleted(event){
+filterBtn.addEventListener('click', clearCompleted)
+function clearCompleted(event) {
     event.preventDefault()
     let currList = JSON.parse(localStorage.getItem(currListId))
     let curTask = currList.tasks
-     curTask = curTask.filter(ele => !ele.taskDone)
-     currList.tasks = curTask
-     localStorage.setItem(currListId, JSON.stringify(currList))
-     taskDiv2.innerHTML=''
-     curTask.forEach(task => buildTaskItems(task))
+    curTask = curTask.filter(ele => !ele.taskDone)
+    currList.tasks = curTask
+    localStorage.setItem(currListId, JSON.stringify(currList))
+    taskDiv2.innerHTML = ''
+    curTask.forEach(task => buildTaskItems(task))
+}
+function buildScheduledTasks(taskName, sDate,listName, sDiv, sBlock) {
+    const div = document.createElement('div')
+    const sp1 = document.createElement('span')
+    const sp2 = document.createElement('span')
+    const sp3 = document.createElement('span')
+    sp1.innerText = taskName
+    sp2.innerText = sDate
+    sp3.innerText = listName
+    sp2.setAttribute('style', 'margin-left:20px;padding:5px;')
+    sp3.setAttribute('style', 'float:right;')
+    div.appendChild(sp1)
+    div.appendChild(sp2)
+    div.appendChild(sp3)
+    div.setAttribute('style', 'border-style: inset;padding:5px;')
+    sDiv.appendChild(div)
+    sBlock.appendChild(sDiv)
+}
+listNav.addEventListener('click', () => {
+    if (mainDivList.style.display === 'none') {
+        mainDivList.style.display = 'grid'
+        searchBtn.style.display = 'block'
+        todayBlock.style.display = 'none'
+        schBlock.style.display = 'none'
+    }
+})
+schNav.addEventListener('click', () => {
+    if (schBlock.style.display === 'none') {
+        mainDivList.style.display = 'none'
+        todayBlock.style.display = 'none'
+        schBlock.style.display = 'block'
+        searchBtn.style.display = 'none'
+    } else {
+        schBlock.style.display = 'none'
+    }
+})
+todayNav.addEventListener('click', () => {
+    if (todayBlock.style.display === 'none') {
+        mainDivList.style.display = 'none'
+        todayBlock.style.display = 'block'
+        schBlock.style.display = 'none'
+        searchBtn.style.display = 'none'
+    } else {
+        todayBlock.style.display = 'none'
+    }
+})
+function getAllListItems() {
+    let allLiItems = []
+    listItems.forEach(ele => {
+        allLiItems.push(JSON.parse(localStorage.getItem(ele)))
+    })
+    return allLiItems;
+}
+schNav.addEventListener('click', getScheduledTasks)
+function getScheduledTasks(event) {
+    const allLiItems = getAllListItems()
+    schDiv.innerHTML = ''
+    allLiItems.forEach(item => {
+        let allTasks = item.tasks
+        allTasks.forEach(task => {
+            if (task.dueDate) {
+              buildScheduledTasks(task.name, task.dueDate , item.listName, schDiv, schBlock)
+            }
+        })
+    })
 }
 
-today.addEventListener('click',getTodayTasks)
-function getTodayTasks(event){
-    console.log(event.target)
-    mainDivList.style.display = 'none'
+todayNav.addEventListener('click', getTodayTasks)
+function getTodayTasks(event) {
+    const today = new Date(Date.now()).toISOString().split('T')[0]
+    const allLiItems = getAllListItems()
+    todayDiv.innerHTML = ''
+    allLiItems.forEach(item => {
+        let allTasks = item.tasks
+        allTasks.filter(task => {
+            if (task.dueDate === today) {
+                buildScheduledTasks(task.name, task.dueDate , item.listName, todayDiv, todayBlock)
+            }
+        })
+    })
 }
-
-
 
 const header = document.getElementById("myDIV");
 const btns = header.getElementsByClassName("block-2");
 for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
-  });
+    btns[i].addEventListener("click", function () {
+        var current = document.getElementsByClassName("active");
+        current[0].className = current[0].className.replace(" active", "");
+        this.className += " active";
+    });
 }

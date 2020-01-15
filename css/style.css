@@ -49,7 +49,7 @@ ul li {
     margin-left:25px;
     justify-content: center;
 }
-.task-div input[type='text']{
+.task-div input[type='text'] ,.today-task input[type='text'] {
     width:80%;
     padding: 10px;
     margin:5px;
@@ -118,9 +118,11 @@ ul li {
     padding: 10px;
     display: block;
 }
-.block-3 .button {
+.block-3  {
     justify-self: center;
-    border-style: groove;
+    border-style: ridge;
+    background-color:#444;
+    border-color: #444;
 }
 .nav-bar {
     display: grid;
@@ -184,37 +186,9 @@ ul li {
     color: black;
     border: none;
     }
-.popup {
-    position: relative;
-    /* display: inline-block; */
-    cursor: pointer;
-    user-select: none;
-}    
-.popup .popuptext {
-    visibility: hidden;
-    width: 80px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0;
-    position: absolute;
-    z-index: 1;
-    /* bottom: 25%; */
-    left: 40%;
-    margin-top: 10px;
-  }
-  .popup .popuptext::after {
-    content: "";
-    position: absolute;
-    /* top: 100%; */
-    /* left: 50%; */
-    /* margin-left: -5px; */
-    /* border-width: 5px; */
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
-  }  
-  .popup .show {
-    visibility: visible;
-  }
-  
+
+.scheduled-task {
+    margin:auto;
+    width:50%;
+    padding:10px;
+}
